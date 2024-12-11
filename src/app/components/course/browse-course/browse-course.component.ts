@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { Course } from '../../../models/course';
 import { MOCK_COURSES } from '../../../mock-data/mock-course';
 import { CommonModule } from '@angular/common';
+import { CourseService } from '../../../services/course.service';
 
 @Component({
   selector: 'app-browse-course',
@@ -13,7 +14,7 @@ import { CommonModule } from '@angular/common';
 export class BrowseCourseComponent implements OnInit, OnChanges {
   courses: Course[] = [];
   @Input() categoryId: number = 0;
-  constructor() {
+  constructor(private courseService: CourseService) {
     this.courses = MOCK_COURSES;
   }
 
@@ -30,9 +31,10 @@ export class BrowseCourseComponent implements OnInit, OnChanges {
     this.getCourseByCategoryId(this.categoryId);
   }
   getCourseByCategoryId(categoryId: number) {
-    this.courses = MOCK_COURSES.filter(f => f.categoryId = categoryId);
+    this.courseService.getCoursesByCategoryId(categoryId).subscribe(data => {
+      this.courses = data;
+    });
   }
-
   formatPrice(price: number): string {
     return `${price.toFixed(2)}`;
   }

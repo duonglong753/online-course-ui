@@ -18,4 +18,10 @@ export class CategoryComponent {
   constructor() {
     this.categories = MOCK_COURSE_CATEGORIES;
   }
+
+  getCategories() {
+    this.categoryService.getCategories().subscribe(data => {
+      this.categories = data;
+    })
+  }
 }
